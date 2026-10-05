@@ -30,13 +30,24 @@ This project follows a two-pass translation flow:
 Run the test suite from the project root:
 
 ```bash
-pytest
+pytest -q
 ```
+
+Run the SQLGlot-only baseline against `data/eval/eval_set.jsonl`:
+
+```bash
+python -m scripts.baseline_report
+```
+
+The starter baseline has 30 queries: sqlglot produces draft SQL for all 30,
+with no transpilation errors. Three drafts contain constructs to verify before
+Spark execution: `LISTAGG` and recursive CTEs require Spark 4.0+, and one
+PostgreSQL JSONB extraction remains untranslated.
 
 ## Milestones
 
 - M1: project scaffold, requirements, environment template, config loader, README skeleton
-- M2: parser and transpiler improvements with starter eval queries
+- M2: PostgreSQL parser and deterministic Spark transpiler, feature extraction, and 30 starter eval queries
 - M3: Spark validator using temp views and schema DDL
 - M4: mapping ingestion and retrieval
 - M5: LLM integration and retry loop
